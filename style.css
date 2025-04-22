@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.game-container {
+    max-width: 800px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+canvas {
+    background-color: #000;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: block;
+    margin: 0 auto;
+}
+
+.controls {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4a7bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2c5edb;
+}
+
+.score-container, .lives-container {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 15px;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+}
+
+.instructions {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ddd;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.instructions h2 {
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+
+.powerups-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    border-left: 4px solid #4a7bff;
+}
+
+.levels-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    border-left: 4px solid #FF9800;
+}
+
+.powerups-info h3, .levels-info h3 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.powerups-info ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+.powerups-info li {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.powerup-split, .powerup-multi {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.powerup-split {
+    color: #FF00FF;
+}
+
+.powerup-multi {
+    color: #00FFFF;
+}
+
+@media (max-width: 820px) {
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+} 

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrickFast - 打砖块游戏</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 确保canvas的显示正确 */
+        #gameCanvas {
+            background-color: #000;
+            display: block;
+            margin: 0 auto;
+            width: 800px;
+            height: 600px;
+        }
+        /* 调试信息样式 */
+        #debugInfo {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            text-align: left;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>BrickFast 打砖块游戏</h1>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div class="controls">
+            <button id="startButton">开始游戏</button>
+            <button id="pauseButton">暂停</button>
+            <div class="score-container">得分: <span id="score">0</span></div>
+            <div class="lives-container">生命: <span id="lives">3</span></div>
+            <button id="debugButton" onclick="toggleDebug()">显示调试</button>
+        </div>
+        <div id="debugInfo"></div>
+        <div class="instructions">
+            <h2>游戏说明</h2>
+            <p>使用左右方向键或A和D键移动挡板，阻止球落下并击碎所有砖块！</p>
+            <div class="powerups-info">
+                <h3>道具系统</h3>
+                <p>击碎砖块时有几率掉落道具：</p>
+                <ul>
+                    <li><span class="powerup-split">◢</span> - 球分裂：让所有球分裂成3个</li>
+                    <li><span class="powerup-multi">✯</span> - 多球发射：从挡板发射3个新球</li>
+                </ul>
+            </div>
+            <div class="levels-info">
+                <h3>关卡系统</h3>
+                <p>游戏共有20个关卡，每关都有独特的砖块阵型。通过所有关卡获得最终胜利！</p>
+                <p>每关开始时都有一个球，击碎砖块有机会获得道具产生更多球！</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 为控制台输出添加一个拦截器，将信息同时显示在调试面板中
+        const debugInfoDiv = document.getElementById('debugInfo');
+        
+        // 显示/隐藏调试信息
+        function toggleDebug() {
+            const debugInfo = document.getElementById('debugInfo');
+            if (debugInfo.style.display === 'none' || !debugInfo.style.display) {
+                debugInfo.style.display = 'block';
+                document.getElementById('debugButton').textContent = '隐藏调试';
+            } else {
+                debugInfo.style.display = 'none';
+                document.getElementById('debugButton').textContent = '显示调试';
+            }
+        }
+        
+        // 拦截控制台输出
+        if (debugInfoDiv) {
+            const originalConsoleLog = console.log;
+            const originalConsoleError = console.error;
+            const originalConsoleWarn = console.warn;
+            
+            console.log = function() {
+                originalConsoleLog.apply(console, arguments);
+                addToDebugInfo('LOG', arguments);
+            };
+            
+            console.error = function() {
+                originalConsoleError.apply(console, arguments);
+                addToDebugInfo('ERROR', arguments, 'red');
+            };
+            
+            console.warn = function() {
+                originalConsoleWarn.apply(console, arguments);
+                addToDebugInfo('WARN', arguments, 'orange');
+            };
+            
+            function addToDebugInfo(type, args, color = 'white') {
+                if (!debugInfoDiv) return;
+                
+                const line = document.createElement('div');
+                line.style.color = color;
+                line.textContent = `[${type}] ` + Array.from(args).map(arg => {
+                    if (typeof arg === 'object') {
+                        try {
+                            return JSON.stringify(arg);
+                        } catch (e) {
+                            return arg.toString();
+                        }
+                    }
+                    return arg;
+                }).join(' ');
+                
+                debugInfoDiv.appendChild(line);
+                // 保持滚动到底部
+                debugInfoDiv.scrollTop = debugInfoDiv.scrollHeight;
+                
+                // 保持最大行数
+                while (debugInfoDiv.childNodes.length > 100) {
+                    debugInfoDiv.removeChild(debugInfoDiv.firstChild);
+                }
+            }
+        }
+        
+        // 页面加载完成后检查游戏元素
+        window.addEventListener('load', function() {
+            console.log('页面加载完成，检查游戏元素...');
+            const canvas = document.getElementById('gameCanvas');
+            if (canvas) {
+                console.log('Canvas尺寸:', canvas.width, 'x', canvas.height);
+            } else {
+                console.error('找不到Canvas元素!');
+            }
+        });
+    </script>
+    
+    <script src="game.js"></script>
+</body>
+</html> 
